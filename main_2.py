@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from ui import Ui_MainWindow
 import sys
-from converter import *
+from conve import *
  
 class Converter_pyqt(QtWidgets.QMainWindow):
     def __init__(self):
