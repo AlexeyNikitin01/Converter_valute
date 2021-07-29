@@ -1,55 +1,57 @@
-import json
 import requests
+import json
+
 
 class Converter:
     """Converter valute"""
-    def __init__(self, one_curr, two_curr, money):
-        self.one_curr = one_curr
-        self.two_curr = two_curr
+    def __init__(self, first_valute, second_valute, money):
+        self.first_valute = first_valute
+        self.second_valute = second_valute
         self.money = money 
 
+    #API 
     def api_json(self):
         url = 'https://www.cbr-xml-daily.ru/daily_json.js'
         value = requests.get(url).json()
         return value
 
-    #Переменные для валют и проверка на корректное введение
-    def currency(self, one_curr, two_curr):
-        #Вызов словарика API
+    #Правильный ввод валют
+    def input_valute(self, first_valute, second_valute):
         value = self.api_json()
-        #проверка на верность ввода валют
-        if (self.one_curr in value["Valute"] or self.one_curr == "RUS") and (self.two_curr in value["Valute"] or self.two_curr == "RUS"):
-            return self.one_curr, self.two_curr
-        elif (not self.one_curr in value["Valute"]) or (not self.two_curr in value["Valute"]):
-            return False
         
-    #метод для ввода денег, необходимых перевода из первой валюты, и проверка колличества денежных средств
+        if ((self.first_valute in value["Valute"] or self.first_valute == "RUB") and 
+                (self.second_valute in value["Valute"] or self.second_valute == "RUB")):
+            return self.first_valute, self.second_valute
+        elif ((not self.first_valute in value["Valute"]) or 
+                (not self.second_valute in value["Valute"])):
+            return 
+        
+    #Обработка ввода денег
     def input_money(self, money):
-        #Исключения для ввода неверного значения денег
         try:
             float(self.money)
             return float(self.money)
         except ValueError:
             return False
 
-    #метод для условия перевода валют и вывод конвернтированной валюты
-    def converter(self, one_curr, two_curr, money):
-        #Вызов словарика API
+    def convert(self, first_valute, second_valute, money):
         value = self.api_json()
         self.money = self.input_money(self.money)
-        #Проверка на верный ввод данных
-        if self.currency(self.one_curr, self.two_curr) == False:
+   
+        if self.input_valute(self.first_valute, self.second_valute) == None:
             return 'Нет такой валюты'
         elif self.input_money(self.money) == False:
             return 'Надо число денег'
         else:
-            #Проверка на ввод валюты и вывод денег
-            if self.one_curr == "RUS" and self.two_curr == "RUS":
+            #Конвертирование валюты
+            if self.first_valute == "RUB" and self.second_valute == "RUB":
                 converter = self.money
-            elif self.one_curr == "RUS":
-                converter = (1/value["Valute"][self.two_curr]["Value"])*self.money
-            elif self.two_curr == "RUS":
-                converter = (value["Valute"][self.one_curr]["Value"]/1)*self.money
-            elif (self.one_curr in value["Valute"]) and (self.two_curr in value["Valute"]):
-                converter = (value["Valute"][self.one_curr]["Value"]/value["Valute"][self.two_curr]["Value"])*self.money
+            elif self.first_valute == "RUB":
+                converter = self.money/value["Valute"][self.second_valute]["Value"]
+            elif self.second_valute == "RUB":
+                converter = value["Valute"][self.first_valute]["Value"]*self.money
+            elif ((self.first_valute in value["Valute"]) and 
+                    (self.second_valute in value["Valute"])):
+                converter = ((value["Valute"][self.first_valute]["Value"]/
+                                value["Valute"][self.second_valute]["Value"])*self.money)
             return round(converter, 2)
