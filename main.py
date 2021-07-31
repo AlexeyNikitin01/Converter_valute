@@ -6,17 +6,19 @@ from ui import Ui_MainWindow
 from converter import *
  
 
-class Converter_pyqt(QtWidgets.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
-        super(Converter_pyqt, self).__init__()
+        super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.init_ui()
-        #Кнопка
+
+        self.converter = Converter()
+        # Кнопка
         self.ui.pushButton.clicked.connect(self.convert)
 
     def init_ui(self):
-        #Дизайн верзней части программы
+        #Дизайн верхней части программы
         self.setWindowTitle("Converter valute")
         self.setWindowIcon(QIcon("Icon.png"))
 
@@ -27,15 +29,16 @@ class Converter_pyqt(QtWidgets.QMainWindow):
         self.ui.lineEdit_5.setPlaceholderText('Вывод денег')
 
     def convert(self):
-        first_valute =  self.ui.lineEdit.text().upper()
+        first_valute = self.ui.lineEdit.text().upper()
         second_valute = self.ui.lineEdit_2.text().upper()
-        money = self.ui.lineEdit_3.text()
-        exem = Converter(first_valute, second_valute, money)
-        out_money = exem.convert(first_valute, second_valute, money)
-        #Вывод конвертированной валюты
+        money = float(self.ui.lineEdit_3.text())
+        out_money = self.converter.convert(first_valute, second_valute, money)
+        # Вывод конвертированной валюты
         self.ui.lineEdit_5.setText(str(out_money))
 
-app = QtWidgets.QApplication([])
-application = Converter_pyqt()
-application.show()
-sys.exit(app.exec())
+
+if __name__ == '__main__':
+    app = QtWidgets.QApplication([])
+    application = MainWindow()
+    application.show()
+    sys.exit(app.exec())
