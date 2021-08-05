@@ -1,3 +1,4 @@
+import json
 import requests
 from typing import Dict
 
@@ -18,8 +19,10 @@ class ExchangeRateProvider(IExchangeRateProvider):
 			self._exchange_rate = self._process_response(response.json())
 		except requests.HTTPError as http_error:
 			print(f"HTTPError: {http_error}")
+			raise http_error
 		except Exception as e:
 			print(f"Exception: {str(e)}")
+			raise e
 
 	@staticmethod
 	def _process_response(response_json: dict) -> Dict[str, float]:
@@ -30,4 +33,16 @@ class ExchangeRateProvider(IExchangeRateProvider):
 		return result
 
 	def exchange_rate(self) -> dict:
+		return self._exchange_rate
+
+
+class OfflineExchangeRateProvider(IExchangeRateProvider):
+	PATH_TO_FILE = 'outfile.json'
+
+	def __init__(self):
+		self._exchange_rate = None
+		with open("outfile.json", "r") as file:
+			self._exchange_rate = json.load(file)
+
+	def exchange_rate(self):
 		return self._exchange_rate
