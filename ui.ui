@@ -73,6 +73,42 @@
       <string>CURRENCY</string>
      </property>
     </widget>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>210</y>
+       <width>351</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>Online mode</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Offline mode</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Combined mode</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+    </widget>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
