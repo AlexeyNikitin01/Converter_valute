@@ -1,12 +1,16 @@
-from erp import ExchangeRateProvider, IExchangeRateProvider
+import logging
+
+from erp import IExchangeRateProvider
 
 
 class Converter:
     """Currency converter"""
-    def __init__(self, exchange_rate_provider: IExchangeRateProvider = ExchangeRateProvider()):
+    def __init__(self, exchange_rate_provider: IExchangeRateProvider):
         self.exchange_rate_provider = exchange_rate_provider
 
     def convert(self, first_currency: str, second_currency: str, money: float) -> float:
+        logging.info(f"Converting {money} {first_currency} to {second_currency}")
+
         exchange_rate = self.exchange_rate_provider.exchange_rate()
 
         if first_currency not in exchange_rate:

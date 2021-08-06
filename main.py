@@ -1,10 +1,14 @@
 import sys
+import logging
 
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from ui import Ui_MainWindow
 from converter import *
- 
+from erp import *
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -13,16 +17,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.init_ui()
 
-        self.converter = Converter()
+        try:
+            exchange_rate_provider = ExchangeRateProvider()
+        except Exception as e:
+            exchange_rate_provider = OfflineExchangeRateProvider()
+
+        self.converter = Converter(exchange_rate_provider)
         # Кнопка
         self.ui.pushButton.clicked.connect(self.convert)
 
     def init_ui(self):
-        #Дизайн верхней части программы
+        # Дизайн верхней части программы
         self.setWindowTitle("Converter valute")
         self.setWindowIcon(QIcon("Icon.png"))
 
-        #Подсказка в lineEdit
+        # Подсказка в lineEdit
         self.ui.lineEdit.setPlaceholderText('Первая валюта')
         self.ui.lineEdit_2.setPlaceholderText('Вторая валюта')
         self.ui.lineEdit_3.setPlaceholderText('Ввод денег')
