@@ -11,7 +11,7 @@ class IExchangeRateProvider:
         raise NotImplementedError()
 
 
-class ExchangeRateProvider(IExchangeRateProvider):
+class OnlineExchangeRateProvider(IExchangeRateProvider):
     URL = 'https://www.cbr-xml-daily.ru/daily_json.js'
 
     def exchange_rate(self) -> dict:
@@ -53,7 +53,7 @@ class OfflineExchangeRateProvider(IExchangeRateProvider):
 class CombinedExchangeRate(IExchangeRateProvider):
     def __init__(self):
         self.offline_provider = OfflineExchangeRateProvider()
-        self.online_provider = ExchangeRateProvider()
+        self.online_provider = OnlineExchangeRateProvider()
 
     def exchange_rate(self):
         return self.online_provider.exchange_rate() or self.offline_provider.exchange_rate()

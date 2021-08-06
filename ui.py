@@ -45,11 +45,6 @@ class Ui_MainWindow(object):
         font.setPointSize(20)
         self.comboBox.setFont(font)
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.setItemText(3, "")
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(10, 300, 361, 61))
         font = QtGui.QFont()
@@ -118,9 +113,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "CONVERTER"))
         self.label_2.setText(_translate("MainWindow", "CURRENCY"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Online mode"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Offline mode"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "Combined mode"))
         self.pushButton.setText(_translate("MainWindow", "CONVERTER"))
 
 

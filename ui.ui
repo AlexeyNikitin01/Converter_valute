@@ -90,21 +90,6 @@
      </property>
      <item>
       <property name="text">
-       <string>Online mode</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Offline mode</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Combined mode</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string/>
       </property>
      </item>
