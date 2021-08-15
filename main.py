@@ -18,49 +18,42 @@ class MainWindow(QtWidgets.QMainWindow):
         self.init_ui()
 
         providers = [OnlineExchangeRateProvider, OfflineExchangeRateProvider, CombinedExchangeRate]
-        for i, provider in enumerate(providers):
-            self.ui.comboBox.addItem(provider.__name__, userData=provider)
+        for provider in providers:
+            self.ui.switch_providers.addItem(provider.__name__, userData=provider)
 
         self.converter = Converter(OfflineExchangeRateProvider())
         self.change_provider(0)
-        # Кнопка
-        self.ui.pushButton.clicked.connect(self.convert)
-        self.ui.comboBox.currentIndexChanged.connect(self.change_provider)
+
+        self.ui.button_convert.clicked.connect(self.convert)
+        self.ui.switch_providers.currentIndexChanged.connect(self.change_provider)
 
     def init_ui(self):
-        # Дизайн верхней части программы
-        self.setWindowTitle("Converter valute")
+        self.setWindowTitle("Converter currency")
         self.setWindowIcon(QIcon("Icon.png"))
 
         # Подсказка в lineEdit
-        self.ui.lineEdit.setPlaceholderText('Первая валюта')
-        self.ui.lineEdit_2.setPlaceholderText('Вторая валюта')
-        self.ui.lineEdit_3.setPlaceholderText('Ввод денег')
-        self.ui.lineEdit_5.setPlaceholderText('Вывод денег')
+        self.ui.first_currency.setPlaceholderText('Первая валюта')
+        self.ui.second_currency.setPlaceholderText('Вторая валюта')
+        self.ui.money.setPlaceholderText('Ввод денег')
+        self.ui.converted.setPlaceholderText('Вывод денег')
 
-        self.ui.lineEdit_3.setValidator(QDoubleValidator(0.0, 1000_000_000.0, 2))
+        self.ui.money.setValidator(QDoubleValidator(0.0, 1000_000_000.0, 2))
 
     def convert(self):
-        first_currency = self.ui.lineEdit.text().upper()
-        second_currency = self.ui.lineEdit_2.text().upper()
+        first_currency = self.ui.first_currency.text().upper()
+        second_currency = self.ui.second_currency.text().upper()
 
         error_message = "Error"
         try:
-            money = float(self.ui.lineEdit_3.text().replace(',', '.'))
-        except ValueError as error:
-            logging.error(f"Exception while converting: {str(error)}")
-            self.ui.lineEdit_5.setText(error_message)
-            return
-
-        try:
+            money = float(self.ui.money.text().replace(',', '.'))
             converted = self.converter.convert(first_currency, second_currency, money)
-            self.ui.lineEdit_5.setText(str(converted))
+            self.ui.converted.setText(str(converted))
         except ValueError as error:
             logging.error(f"Exception while converting: {str(error)}")
-            self.ui.lineEdit_5.setText(error_message)
+            self.ui.converted.setText(error_message)
 
     def change_provider(self, index):
-        provider = self.ui.comboBox.itemData(index)
+        provider = self.ui.switch_providers.itemData(index)
         self.converter.exchange_rate_provider = provider()
         logging.info(f"Change exchange rate provider to '{provider.__name__}'")
 

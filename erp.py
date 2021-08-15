@@ -1,8 +1,11 @@
 import json
 import logging
+import datetime
 
 import requests
 
+
+from dateutil import parser
 from typing import Dict
 
 
@@ -35,6 +38,7 @@ class OnlineExchangeRateProvider(IExchangeRateProvider):
         for currency_id, data in response_json["Valute"].items():
             result[currency_id] = data["Value"] / data["Nominal"]
         result["RUB"] = 1.0
+        result["Date"] = response_json["Date"]
         return result
 
 
@@ -57,3 +61,18 @@ class CombinedExchangeRate(IExchangeRateProvider):
 
     def exchange_rate(self):
         return self.online_provider.exchange_rate() or self.offline_provider.exchange_rate()
+
+
+class CacheOfflineExchangeRateProvider:
+    def __init__(self):
+        self.offline_provider = OfflineExchangeRateProvider()
+        self.online_provider = OnlineExchangeRateProvider()
+
+    def check_request(self):
+        date_now = datetime.datetime.today().timestamp()
+        date_offline_provider = self.offline_provider._exchange_rate["Date"].timestamp()
+        difference_today_and_offline_provider = date_now - date_offline_provider
+        self.online_provider = self.online_provider.exchange_rate
+        if difference_today_and_offline_provider >= 3600*24:
+            with open("outfile.json", "w") as file:
+                json.dump(self.online_provider, file, indent=2)
