@@ -19,7 +19,7 @@ class Converter:
         if second_currency not in exchange_rate:
             raise ValueError(f"Unexpected currency identifier: '{second_currency}'")
 
-        first_rate = exchange_rate[first_currency]
-        second_rate = exchange_rate[second_currency]
+        first_rate = exchange_rate["Valute"][first_currency]
+        second_rate = exchange_rate["Valute"][second_currency]
 
         return round(first_rate * money / second_rate, 2)

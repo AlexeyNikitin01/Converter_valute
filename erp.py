@@ -4,13 +4,12 @@ import datetime
 
 import requests
 
-
 from dateutil import parser
 from typing import Dict
 
 
 class IExchangeRateProvider:
-    def exchange_rate(self) -> Dict[str, float]:
+    def exchange_rate(self):
         raise NotImplementedError()
 
 
@@ -33,11 +32,11 @@ class OnlineExchangeRateProvider(IExchangeRateProvider):
         return exchange_rate
 
     @staticmethod
-    def _process_response(response_json: dict) -> Dict[str, float]:
+    def _process_response(response_json: dict):
         result = {}
         for currency_id, data in response_json["Valute"].items():
-            result[currency_id] = data["Value"] / data["Nominal"]
-        result["RUB"] = 1.0
+            result["Valute"][currency_id] = data["Value"] / data["Nominal"]
+        result["Valute"]["RUB"] = 1.0
         result["Date"] = response_json["Date"]
         return result
 
@@ -63,16 +62,24 @@ class CombinedExchangeRate(IExchangeRateProvider):
         return self.online_provider.exchange_rate() or self.offline_provider.exchange_rate()
 
 
-class CacheOfflineExchangeRateProvider:
+class CacheExchangeRateProvider(IExchangeRateProvider):
     def __init__(self):
         self.offline_provider = OfflineExchangeRateProvider()
         self.online_provider = OnlineExchangeRateProvider()
 
-    def check_request(self):
+    def is_cache_valid(self):
         date_now = datetime.datetime.today().timestamp()
-        date_offline_provider = self.offline_provider._exchange_rate["Date"].timestamp()
-        difference_today_and_offline_provider = date_now - date_offline_provider
-        self.online_provider = self.online_provider.exchange_rate
-        if difference_today_and_offline_provider >= 3600*24:
-            with open("outfile.json", "w") as file:
-                json.dump(self.online_provider, file, indent=2)
+        date_offline_provider = parser.parse(self.offline_provider.exchange_rate()["Date"]).timestamp()
+        difference_today_and_offline = date_now - date_offline_provider
+        return difference_today_and_offline < 3600 * 24
+
+    def update_cache(self):
+        update_exchange_rate = self.online_provider.exchange_rate()
+        with open("outfile.json", "w") as file:
+            json.dump(update_exchange_rate, file, indent=2)
+
+    def exchange_rate(self):
+        if self.is_cache_valid():
+            return self.offline_provider.exchange_rate()
+        self.update_cache()
+        return self.offline_provider.exchange_rate()
