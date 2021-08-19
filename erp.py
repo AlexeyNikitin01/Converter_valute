@@ -77,6 +77,8 @@ class CacheExchangeRateProvider(IExchangeRateProvider):
         update_exchange_rate = self.online_provider.exchange_rate()
         with open("outfile.json", "w") as file:
             json.dump(update_exchange_rate, file, indent=2)
+        with open("outfile.json", "r") as file:
+            self.offline_provider._exchange_rate = json.load(file)
 
     def exchange_rate(self):
         if self.is_cache_valid():
