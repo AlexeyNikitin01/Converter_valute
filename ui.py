@@ -38,64 +38,71 @@ class Ui_MainWindow(object):
         font.setPointSize(28)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(10, 300, 361, 61))
+        self.switch_providers = QtWidgets.QComboBox(self.frame)
+        self.switch_providers.setGeometry(QtCore.QRect(20, 210, 351, 41))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        font.setPointSize(20)
+        self.switch_providers.setFont(font)
+        self.switch_providers.setObjectName("comboBox")
+        self.first_currency = QtWidgets.QLineEdit(self.centralwidget)
+        self.first_currency.setGeometry(QtCore.QRect(10, 300, 361, 61))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI Light")
         font.setPointSize(26)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setStyleSheet("background-color: #fff;\n"
-"border: 30px;\n"
-"color: green;\n"
-"")
-        self.lineEdit.setText("")
-        self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_2.setGeometry(QtCore.QRect(10, 460, 361, 61))
+        self.first_currency.setFont(font)
+        self.first_currency.setStyleSheet("background-color: #fff;\n"
+                                                    "border: 30px;\n"
+                                                    "color: green;\n"
+                                                    "")
+        self.first_currency.setText("")
+        self.first_currency.setObjectName("lineEdit")
+        self.second_currency = QtWidgets.QLineEdit(self.centralwidget)
+        self.second_currency.setGeometry(QtCore.QRect(10, 460, 361, 61))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI Light")
         font.setPointSize(26)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setStyleSheet("background-color: #fff;\n"
-"border: 30px;\n"
-"color: green;\n"
-"text-align: center;\n"
-"\n"
-"")
-        self.lineEdit_2.setText("")
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_3.setGeometry(QtCore.QRect(10, 380, 361, 61))
+        self.second_currency.setFont(font)
+        self.second_currency.setStyleSheet("background-color: #fff;\n"
+                                                    "border: 30px;\n"
+                                                    "color: green;\n"
+                                                    "text-align: center;\n"
+                                                    "\n"
+                                                    "")
+        self.second_currency.setText("")
+        self.second_currency.setObjectName("lineEdit_2")
+        self.money = QtWidgets.QLineEdit(self.centralwidget)
+        self.money.setGeometry(QtCore.QRect(10, 380, 361, 61))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI Light")
         font.setPointSize(26)
-        self.lineEdit_3.setFont(font)
-        self.lineEdit_3.setStyleSheet("background-color: #fff;\n"
-"border: 30px;\n"
-"color: green;\n"
-"")
-        self.lineEdit_3.setText("")
-        self.lineEdit_3.setObjectName("lineEdit_3")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(10, 630, 351, 91))
+        self.money.setFont(font)
+        self.money.setStyleSheet("background-color: #fff;\n"
+                                            "border: 30px;\n"
+                                            "color: green;\n"
+                                            "")
+        self.money.setText("")
+        self.money.setObjectName("lineEdit_3")
+        self.button_convert = QtWidgets.QPushButton(self.centralwidget)
+        self.button_convert.setGeometry(QtCore.QRect(10, 630, 351, 91))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei Light")
         font.setPointSize(28)
-        self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("background-color:3")
-        self.pushButton.setObjectName("pushButton")
-        self.lineEdit_5 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_5.setGeometry(QtCore.QRect(10, 540, 361, 61))
+        self.button_convert.setFont(font)
+        self.button_convert.setStyleSheet("background-color:3")
+        self.button_convert.setObjectName("pushButton")
+        self.converted = QtWidgets.QLineEdit(self.centralwidget)
+        self.converted.setGeometry(QtCore.QRect(10, 540, 361, 61))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI Light")
         font.setPointSize(26)
-        self.lineEdit_5.setFont(font)
-        self.lineEdit_5.setStyleSheet("background-color: #fff;\n"
-"border: 30px;\n"
-"color: green;\n"
-"")
-        self.lineEdit_5.setText("")
-        self.lineEdit_5.setObjectName("lineEdit_5")
+        self.converted.setFont(font)
+        self.converted.setStyleSheet("background-color: #fff;\n"
+                                                "border: 30px;\n"
+                                                "color: green;\n"
+                                                "")
+        self.converted.setText("")
+        self.converted.setObjectName("lineEdit_5")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -106,7 +113,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "CONVERTER"))
         self.label_2.setText(_translate("MainWindow", "CURRENCY"))
-        self.pushButton.setText(_translate("MainWindow", "CONVERTER"))
+        self.button_convert.setText(_translate("MainWindow", "CONVERTER"))
 
 
 if __name__ == "__main__":
@@ -117,5 +124,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
-
